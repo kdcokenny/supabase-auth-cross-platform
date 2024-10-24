@@ -1,7 +1,6 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import { InfoIcon } from "lucide-react";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const BACKEND_URL = "http://localhost:8000";
@@ -19,18 +18,11 @@ export default function ProtectedPage() {
 
       const backendUser = await fetch(`${BACKEND_URL}/auth/me`, {
         credentials: "include",
+        method: "GET",
       });
       if (backendUser.ok) {
         const userData = await backendUser.json();
         setBackendUserJson(userData);
-      }
-
-      const backendUserBase64 = await fetch(`${BACKEND_URL}/auth/me/base64`, {
-        credentials: "include",
-      });
-      if (backendUserBase64.ok) {
-        const userDataBase64 = await backendUserBase64.json();
-        setBackendUserBase64Json(userDataBase64);
       }
     };
 
@@ -56,12 +48,6 @@ export default function ProtectedPage() {
         <h2 className="font-bold text-2xl mb-4">Your user details from backend</h2>
         <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
           {JSON.stringify(backendUserJson, null, 2)}
-        </pre>
-      </div>
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">Your user details from backend (base64 decoded)</h2>
-        <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          {JSON.stringify(backendUserBase64Json, null, 2)}
         </pre>
       </div>
     </div>
