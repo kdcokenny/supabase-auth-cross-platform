@@ -25,7 +25,7 @@ def _decode_auth_session_base64(base64_auth_session: str) -> AuthSession:
 def _extract_auth_session_cookie(request: Request) -> str | None:
     session_cookie_arr: list[str] = []
     for cookie_name in request.cookies.keys():
-        if cookie_name.startswith("auth_session"):
+        if cookie_name == "auth_session" or cookie_name.startswith("auth_session."):
             session_cookie_arr.append(request.cookies.get(cookie_name, ""))
 
     base64_str = "".join(session_cookie_arr).replace("base64-", "")
